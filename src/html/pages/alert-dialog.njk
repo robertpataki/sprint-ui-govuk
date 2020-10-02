@@ -1,0 +1,158 @@
+{% set pageName = 'Accessible alert dialog' %}
+{% extends "layouts/master-layout.njk" %}
+
+{% block content %}
+  <h1 class="govuk-heading-xl">Accessible alert dialog component</h1>
+  
+  <h2 class="govuk-heading-l">When to use this component</h2>
+  <p class="govuk-body">Alert dialogs should be used to inform the user of an upcoming action, and the action's potential impact on the user journey. This action can be either initiated by user interaction (e.g. the user clicks a button delete an important document), or it can be triggered by a time based event (e.g. the user's session is about to expire).</p>
+  <p class="govuk-body govuk-!-font-weight-bold">The alert dialog has 2 functions:</p>
+  <ol class="govuk-list govuk-list--number">
+    <li>Inform the user about the impact of the upcoming action.</li>
+    <li>Ask the user how they would like to proceed.</li>
+  </ol>
+  <p class="govuk-body">The user should be asked a closed-ended question, which gives them 2 possible answers to choose from - for instance 'Yes'/'No' or 'OK'/'Cancel'.</p>
+
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+  <h2 class="govuk-heading-l">Examples</h2>
+  <div>
+    <h3 class="govuk-heading-m">Example 1: Alert dialog triggered by a button click</h3>
+    <p class="govuk-body">Clicking the button below will open an alert dialog to prompt the user about something important.</p>
+    <button type="button" class="govuk-button" onclick="openDialog()">Open dialog</button>
+    <script>
+      function openDialog() {
+        var alertDialog = new AlertDialog({
+          title: 'Spider alert',
+          warningText: 'There is a spider sleeping in your left shoe.',
+          questionText: 'Will you put your left shoe on?'
+        });
+        alertDialog.open();
+      }
+    </script>
+  </div>
+
+  <div class="govuk-!-margin-top-5">
+    <h3 class="govuk-heading-m">Example 2: Alert dialog triggered by a timed event</h3>
+    <p class="govuk-body">Clicking the button below starts a 3 seconds timer, which prompts the user with an alert dialog.</p>
+    <button type="button" class="govuk-button" onclick="startTimer()">Start timer</button>
+    <span id="time-elapsed" class="govuk-body govuk-!-padding-top-2 govuk-!-padding-left-2 govuk-!-font-weight-bold" style="display: inline-block;" aria-live="assertive"></span>
+    <script>
+      var timerButton = document.querySelector('#time-elapsed');
+      function showTimeElapsed(secondsLeft) {
+        var suffix = secondsLeft > 1 ? ' secs' : ' sec';
+        timerButton.innerHTML = 'Opening in ' + secondsLeft + suffix;
+      }
+
+      var timeout;
+      var interval;
+
+      function startTimer() {
+        var timer = 3000;
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+
+        if (interval) {
+          clearInterval(interval);
+        }
+        
+        timeout = setTimeout(openDialog2, timer);
+        
+        var secondsRemaining = timer;
+        showTimeElapsed(Math.ceil(secondsRemaining / 1000));
+        interval = setInterval(function() {
+          secondsRemaining -= 1000;
+          showTimeElapsed(Math.ceil(secondsRemaining / 1000));
+          
+          if (secondsRemaining === 0) {
+            clearInterval(interval);
+            interval = null;
+            timerButton.innerHTML = '';
+          }
+        }, 1000);
+      }
+
+      function openDialog2() {
+        var sessionAlertDialog = new AlertDialog({
+          title: 'Session expiry alert',
+          warningText: 'Your user session expires in 5 minutes.',
+          questionHtml: '<p>If your session expires, you will be redirected to the start page, and you will not be able to finish your application.</p><br><p>Would you like to extend your user session by<br><b>60 minutes</b> and continue with your application?</p>'
+        });
+        sessionAlertDialog.open();
+      }
+    </script>
+  </div>
+
+  <div class="govuk-!-margin-top-5">
+    <h3 class="govuk-heading-m">Example 3: Handling user feedback</h3>
+    <p class="govuk-body">Clicking the button below will open an alert dialog.</p>
+    <p class="govuk-body">2 event callbacks can be attached to the AlertDialog instance to capture the user's answers (and when the dialog is closed).</p>
+    <button type="button" class="govuk-button" onclick="openDialog3()">Open dialog</button>
+
+    <script>
+      function openDialog3() {
+        var alertDialog3 = new AlertDialog({
+          title: 'Spider alert',
+          warningText: 'There is a spider sleeping in your left shoe.',
+          questionText: 'Will you put your left shoe on?'
+        });
+        alertDialog3.open(function() {
+          alertDialog3 = null;
+          alert('Wow, you\'re really not afraid of spiders, are you?');
+        }, function() {
+          alertDialog3 = null;
+          alert('That is a very sensible answer.');
+        });
+      }
+    </script>
+  </div>
+
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+  <h2 class="govuk-heading-l" id="accessibility-criteria">Accessibility criteria</h2>
+  <p class="govuk-body">This component was created with the following design and accessibility criteria in mind: <a href="https://github.com/alphagov/govuk-design-system-backlog/issues/30#issuecomment-553932293">Modal component acceptance criteria</a>.</p>
+
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+  <h2 class="govuk-heading-l">Browser compatibility</h2>
+  <p class="govuk-body">The component is compatible with all modern browsers (latest version) and IE11.</p>
+
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+  <h2 class="govuk-heading-l">Accessibility testing</h2>
+  <p class="govuk-body">Manual testing with the following assistive technology software has been carried out to make sure the <a href="#accessibility-criteria">accessibility criteria</a> is met, and any potential usability and accessibility issues have been caught and dealt with:</p>
+  <p class="govuk-body govuk-!-font-weight-bold">Windows (Dell Precision):</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>Operating System: Windows 10 Pro</li>
+    <li>Software: NVDA 2019.1.1</li>
+    <li>Browser: Chrome, Firefox, MS Edge, Internet Explorer 11</li>
+  </ul>
+  
+  <p class="govuk-body govuk-!-font-weight-bold">Mac (Macbook Pro):</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>Operating System: OS X 10.15.6</li>
+    <li>Software: Voice Over</li>
+    <li>Browser: Safari, Chrome, Firefox, MS Edge</li>
+  </ul>
+
+  <p class="govuk-body govuk-!-font-weight-bold">Mobile (iPhone 7)</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>Operating System: iOS 14.0.0</li>
+    <li>Software: Voice Over</li>
+    <li>Browser: Mobile Safari</li>
+  </ul>
+
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+  <h2 class="govuk-heading-l">Developer notes</h2>
+
+  <ul class="govuk-list govuk-list--bullet">
+    <li>The code can be found on <a href="https://github.com/robertpataki/sprint-ui-govuk/blob/accessible-alert-dialog/src/assets/js/modules/alert-dialog.js">Github</a>.</li>
+    <li>Note to self - add code snippets to examples section!</li>
+    <li>The component supports multiple, overlaying dialogs with focus abd keyboard management. The use case for multiple alert dialogs can be very much edge-case like, but not impossible, so a fair bit of effort was made to make the user interaction as seamless as possible.</li>
+    <li>The alert dialog component relies on JavaScript, which makes it not meet Design Criteria #2. For the same reason there are limitations to how this could work as a nunjucks macro.</li>
+    <li>To do: Explore use cases where the alert dialog could work without the reliance on JavaScript</li>
+    <li>The code implementation is still 'work in progess'; further effort is required to make it comply with the GOVUK coding standards</li>
+  </ul>
+{% endblock %}
