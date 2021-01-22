@@ -132,6 +132,18 @@ It is important to remember, that [you MUST protect your Heroku site](https://go
 	$ heroku config:set USERNAME=BRUCE_WAYNE
 	$ heroku config:set PASSWORD=I_WEAR_TIGHTS_AT_NIGHT
 	
+## Accessible HTML component experiments
+
+### Alert dialog
+
+This experimental component aims to make the sometimes necessary alert dialog accessible - using a mix of markup and JavaScript. The aim is to meet the vigorous [GDS guidelines](https://github.com/alphagov/govuk-design-system-backlog/issues/30#issuecomment-553932293) as much as possible, but due to the extend of work reqiured, this is still WIP.
+
+**Demo:** [https://sprint-ui-govuk.herokuapp.com/alert-dialog](https://sprint-ui-govuk.herokuapp.com/alert-dialog)
+**Code:** 
+- **JS:** [https://github.com/robertpataki/sprint-ui-govuk/blob/accessible-alert-dialog/src/assets/js/modules/alert-dialog.js](https://github.com/robertpataki/sprint-ui-govuk/blob/accessible-alert-dialog/src/assets/js/modules/alert-dialog.js)
+- **SASS:** [https://github.com/robertpataki/sprint-ui-govuk/blob/accessible-alert-dialog/src/assets/sass/components/_alert-dialog.scss](https://github.com/robertpataki/sprint-ui-govuk/blob/accessible-alert-dialog/src/assets/sass/components/_alert-dialog.scss)
+- **NJK:** [https://github.com/robertpataki/sprint-ui-govuk/blob/accessible-alert-dialog/src/html/pages/alert-dialog.njk](https://github.com/robertpataki/sprint-ui-govuk/blob/accessible-alert-dialog/src/html/pages/alert-dialog.njk)
+  
 
 ## ❯❯❯ Developer notes
 - **Imagemin** has a dependency called `jpegtran`, which is a little flaky, and occassionally it can fail the image processing [https://gist.github.com/welcoMattic/9f0991fa81a80096a3877ee42562c504](https://gist.github.com/welcoMattic/9f0991fa81a80096a3877ee42562c504).
